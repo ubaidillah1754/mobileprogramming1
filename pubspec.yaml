@@ -1,25 +1,30 @@
 name: kartu_profil
-description: "Aplikasi kartu profil sederhana menggunakan Flutter."
+description: "Aplikasi Daftar Kontak dan Manajemen User API"
 publish_to: 'none'
 
-version: 1.0.0+1
-
 environment:
-  sdk: ^3.13.5
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.8
-  http: ^1.2.0  # <-- WAJIB DITAMBAHKAN UNTUK CRUD REST API
+  flutter_localizations:
+    sdk: flutter
+
+  # Packages Praktikum Pertemuan 6
+  convex_bottom_bar: ^3.2.0
+  faker: ^2.2.0
+  intl: 0.20.3
+  dropdown_search: ^6.0.1
+  avatar_glow: ^3.0.1
+
+  # Package HTTP API
+  http: ^1.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^6.0.0
+  flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true
-
-  assets:
-    - assets/foto_profil.jpg

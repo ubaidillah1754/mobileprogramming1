@@ -10,7 +10,7 @@ class UserService {
   static List<UserModel>? _cachedUsers;
 
   // Daftar nama orang Indonesia untuk melokalisasi data dari API ReqRes
-  static final List<Map<String, String>> _indonesianNames = [
+  static final List _indonesianNames = [
     {
       'first_name': 'Budi',
       'last_name': 'Santoso',
@@ -68,7 +68,8 @@ class UserService {
         }
         return List<UserModel>.from(_cachedUsers!);
       } else {
-        throw Exception('Gagal memuat data (Error code: ${response.statusCode})');
+        throw Exception(
+            'Gagal memuat data (Error code: ${response.statusCode})');
       }
     } on SocketException {
       throw Exception('Tidak ada koneksi internet. Periksa jaringan Anda.');
@@ -78,7 +79,8 @@ class UserService {
   }
 
   // 2. POST: Membuat user baru
-  Future<UserModel> createUser(String firstName, String lastName, String email) async {
+  Future<UserModel> createUser(
+      String firstName, String lastName, String email) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/users'),
@@ -91,25 +93,25 @@ class UserService {
         }),
       );
 
-      // ReqRes mengembalikan status code 201 untuk operasi POST yang sukses
       if (response.statusCode == 201) {
         final Map<String, dynamic> data = json.decode(response.body);
 
         final newUser = UserModel(
-          id: int.tryParse(data['id'].toString()) ?? DateTime.now().millisecondsSinceEpoch,
+          id: int.tryParse(data['id'].toString()) ??
+              DateTime.now().millisecondsSinceEpoch,
           email: email,
           firstName: firstName,
           lastName: lastName,
           avatar: 'https://reqres.in/img/faces/4-image.jpg',
         );
 
-        // Tambahkan ke cache lokal agar langsung terlihat di daftar pengguna
         _cachedUsers ??= [];
         _cachedUsers!.insert(0, newUser);
 
         return newUser;
       } else {
-        throw Exception('Gagal membuat user (Error code: ${response.statusCode})');
+        throw Exception(
+            'Gagal membuat user (Error code: ${response.statusCode})');
       }
     } on SocketException {
       throw Exception('Tidak ada koneksi internet. Periksa jaringan Anda.');
@@ -119,7 +121,8 @@ class UserService {
   }
 
   // 3. PUT: Memperbarui data user
-  Future<bool> updateUser(int id, String firstName, String lastName, String email) async {
+  Future<bool> updateUser(
+      int id, String firstName, String lastName, String email) async {
     try {
       final response = await http.put(
         Uri.parse('$baseUrl/users/$id'),
@@ -133,7 +136,6 @@ class UserService {
       );
 
       if (response.statusCode == 200) {
-        // Perbarui data di cache lokal
         if (_cachedUsers != null) {
           int index = _cachedUsers!.indexWhere((u) => u.id == id);
           if (index != -1) {
@@ -148,7 +150,8 @@ class UserService {
         }
         return true;
       } else {
-        throw Exception('Gagal memperbarui user (Error code: ${response.statusCode})');
+        throw Exception(
+            'Gagal memperbarui user (Error code: ${response.statusCode})');
       }
     } on SocketException {
       throw Exception('Tidak ada koneksi internet. Periksa jaringan Anda.');
@@ -162,15 +165,14 @@ class UserService {
     try {
       final response = await http.delete(Uri.parse('$baseUrl/users/$id'));
 
-      // ReqRes umumnya mengembalikan status code 204 (No Content) saat delete berhasil
       if (response.statusCode == 204 || response.statusCode == 200) {
-        // Hapus data dari cache lokal
         if (_cachedUsers != null) {
           _cachedUsers!.removeWhere((u) => u.id == id);
         }
         return true;
       } else {
-        throw Exception('Gagal menghapus user (Error code: ${response.statusCode})');
+        throw Exception(
+            'Gagal menghapus user (Error code: ${response.statusCode})');
       }
     } on SocketException {
       throw Exception('Tidak ada koneksi internet. Periksa jaringan Anda.');

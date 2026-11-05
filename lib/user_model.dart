@@ -13,23 +13,23 @@ class UserModel {
     required this.avatar,
   });
 
-  // Factory constructor untuk melakukan parsing JSON ke objek UserModel
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id'] ?? 0,
       email: json['email'] ?? '',
       firstName: json['first_name'] ?? '',
       lastName: json['last_name'] ?? '',
-      avatar: json['avatar'] ?? 'https://reqres.in/img/faces/unknown-image.jpg',
+      avatar: json['avatar'] ?? 'https://reqres.in/img/faces/1-image.jpg',
     );
   }
 
-  // Mengubah objek UserModel kembali ke format JSON (berguna untuk POST/PUT)
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'email': email,
       'first_name': firstName,
       'last_name': lastName,
+      'avatar': avatar,
     };
   }
 }
